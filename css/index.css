@@ -1,0 +1,22 @@
+*{
+padding: 0;
+margin: 0;
+border: 0;
+}
+.contanier{
+    height: 100vh;
+    display: grid;
+    grid-template-columns:repeat(2,50fr);
+}
+.flex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.sigininFormArea{
+    background: lightgrey;
+    flex-flow: column;
+}
+.signupFormArea{
+    background: lightcoral;
+}
