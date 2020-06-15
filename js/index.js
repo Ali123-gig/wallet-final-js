@@ -1,24 +1,41 @@
 var auth=firebase.auth();
 var firestore=firebase.firestore();
 
-var signInFormSubmission=(e)=>{
+var signInFormSubmission= async (e)=>{
 e.preventDefault();
+try {
 var email=document.querySelector(".signIn-email").value
-console.log(email)
 var password=document.querySelector(".signIn-password").value
-console.log(password)
-
-
+if(email&&password){
+    var user=await auth.signInWithEmailAndPassword(email,password);
+    console.log("done") 
+}
+} catch (error) {
+  console.log(error.message)  
+}
 }
 
-var signupFormSubmission=(e)=>{
+var signupFormSubmission= async (e)=>{
  e.preventDefault();
+try {
 var fullname=document.querySelector(".signUp-name").value
-console.log(fullname)
- var email=document.querySelector(".signUp-email").value
- console.log(email)
+var email=document.querySelector(".signUp-email").value
 var password=document.querySelector(".signUp-password").value
-console.log(password)
+if(fullname&&email&&password){
+    var {user:{uid}}= await auth.createUserWithEmailAndPassword(email, password);
+    var userObj={
+        fullname:fullname,
+        email:email,
+        createdAt:new Date()
+    }
+   await firestore.collection("users").doc(uid).set(userObj);
+}
+
+
+} catch (error) {
+console.log(error.message);    
+}
+
     }
 
 var siginForm =document.querySelector(".siginForm ");
