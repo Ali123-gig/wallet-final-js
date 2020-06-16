@@ -15,7 +15,7 @@ border: 0;
 }
 .sigininFormArea{
     background: lightgrey;
-    flex-flow: column;
+
 }
 .signupFormArea{
     background: lightcoral;
