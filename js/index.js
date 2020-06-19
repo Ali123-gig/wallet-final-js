@@ -40,5 +40,32 @@ console.log(error.message);
 
 var siginForm =document.querySelector(".siginForm ");
 siginForm.addEventListener("submit",(e)=>signInFormSubmission(e));
+var googleBtn=document.querySelector(".googleBtn");
+
+googleBtn.addEventListener("click",async () =>{
+    try {
+        
+            var googleProvider = new firebase.auth.GoogleAuthProvider();
+            var users= await firebase.auth().signInWithPopup(googleProvider);
+            console.log(users);
+        } catch (error) {
+            console.log(error);
+        }
+
+});
+
+
+// var googleSign = async ()=>{
+// try {
+//     console.log("useRS")
+//     // var googleProvider = new firebase.auth.GoogleAuthProvider();
+//     // var users= await firebase.auth().signInWithPopup(googleProvider);
+//     // console.log(users);
+// } catch (error) {
+//     console.log(error);
+// }
+// }
+
+//////SIGNUP FORM :
 var signupForm =document.querySelector(".signupForm ")
 signupForm.addEventListener("submit",(e)=>signupFormSubmission(e));
