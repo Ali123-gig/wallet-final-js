@@ -46,8 +46,19 @@ googleBtn.addEventListener("click",async () =>{
     try {
         
             var googleProvider = new firebase.auth.GoogleAuthProvider();
-            var users= await firebase.auth().signInWithPopup(googleProvider);
-            console.log(users);
+            var {additionalUserInfo:{isNewUser},user:{displayName,email,uid}}= await firebase.auth().signInWithPopup(googleProvider);
+         if(isNewUser){
+            var userObj={
+                fullname:displayName,
+                email:email,
+                createdAt:new Date()
+            }
+            // console.log(userObj)
+           await firestore.collection("users").doc(uid).set(userObj);
+         }
+         else{
+            console.log("object")
+         }
         } catch (error) {
             console.log(error);
         }
