@@ -1,5 +1,11 @@
 var auth=firebase.auth();
 var firestore=firebase.firestore();
+var siginForm =document.querySelector(".siginForm ");
+var signupForm =document.querySelector(".signupForm ");
+var googleBtn=document.querySelector(".googleBtn");
+
+
+
 
 var signInFormSubmission= async (e)=>{
 e.preventDefault();
@@ -7,8 +13,14 @@ try {
 var email=document.querySelector(".signIn-email").value
 var password=document.querySelector(".signIn-password").value
 if(email&&password){
-    var user=await auth.signInWithEmailAndPassword(email,password);
-    console.log("done") 
+    //login user 
+    var {user:{uid}}=await auth.signInWithEmailAndPassword(email,password);
+    //fetchuserinfo
+    var userInfo=await firestore.collection("users").doc(uid).get();
+    console.log(userInfo.data()) 
+    //redirect 
+    location.assign(`./dashboard.html#${uid}`);
+
 }
 } catch (error) {
   console.log(error.message)  
@@ -29,6 +41,8 @@ if(fullname&&email&&password){
         createdAt:new Date()
     }
    await firestore.collection("users").doc(uid).set(userObj);
+   location.assign(`./dashboard.html#${uid}`);
+
 }
 
 
@@ -37,11 +51,8 @@ console.log(error.message);
 }
 
     }
-
-var siginForm =document.querySelector(".siginForm ");
+signupForm.addEventListener("submit",(e)=>signupFormSubmission(e));
 siginForm.addEventListener("submit",(e)=>signInFormSubmission(e));
-var googleBtn=document.querySelector(".googleBtn");
-
 googleBtn.addEventListener("click",async () =>{
     try {
         
@@ -53,11 +64,14 @@ googleBtn.addEventListener("click",async () =>{
                 email:email,
                 createdAt:new Date()
             }
-            // console.log(userObj)
-           await firestore.collection("users").doc(uid).set(userObj);
+            console.log(userObj)
+        await firestore.collection("users").doc(uid).set(userObj);
+    location.assign(`./dashboard.html#${uid}`);
+
          }
          else{
-            console.log("object")
+    location.assign(`./dashboard.html#${uid}`);
+            
          }
         } catch (error) {
             console.log(error);
@@ -65,18 +79,3 @@ googleBtn.addEventListener("click",async () =>{
 
 });
 
-
-// var googleSign = async ()=>{
-// try {
-//     console.log("useRS")
-//     // var googleProvider = new firebase.auth.GoogleAuthProvider();
-//     // var users= await firebase.auth().signInWithPopup(googleProvider);
-//     // console.log(users);
-// } catch (error) {
-//     console.log(error);
-// }
-// }
-
-//////SIGNUP FORM :
-var signupForm =document.querySelector(".signupForm ")
-signupForm.addEventListener("submit",(e)=>signupFormSubmission(e));
