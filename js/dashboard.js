@@ -2,12 +2,17 @@
 var auth=firebase.auth();
 var firestore=firebase.firestore();
 var nameDiv=document.querySelector(".name h3")
-console.log(nameDiv)
+var signoutBtn=document.querySelector(".signoutBtn");
+// console.log(nameDiv)
 
 //fetching uid from url 
 
-var uid=location.hash.substring(1,location.hash.length);
+// var uid=location.hash.substring(1,location.hash.length);
 // console.log(uid)
+
+var usersignout= async ()=>{
+await auth.signOut();
+}
 
 var fetchUserInfo= async(uid)=>{
 try {
@@ -25,7 +30,7 @@ return data;
 }
 
 // fetchUserInfo(uid);
-
+signoutBtn.addEventListener("click",usersignout);
 //auth listener 
 auth.onAuthStateChanged(async (user)=> {
     if (user) {
@@ -35,6 +40,6 @@ auth.onAuthStateChanged(async (user)=> {
     nameDiv.textContent=userInfo.fullname;
     } else {
       // No user is signed in.
-      console.log("user loged out ")
+      location.assign("./index.html")
     }
   });

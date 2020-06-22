@@ -16,7 +16,7 @@
     .navbar{
         background: lightpink;
         display: grid;
-        grid-template-columns:min-content 1fr max-content;
+        grid-template-columns:10fr 30fr 40fr 20fr;
     }
     .logo h1{
         padding: 0px 20px;
@@ -26,6 +26,12 @@
     }
     .name h1{
         padding: 0px 20px;
+    }
+    .signoutBtn{
+        height: 60px;
+        width:100px;
+        border-radius: 30%;
+
     }
     .transcationForm{
         background: lightseagreen;
