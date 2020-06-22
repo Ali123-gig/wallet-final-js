@@ -3,6 +3,7 @@ var auth=firebase.auth();
 var firestore=firebase.firestore();
 var nameDiv=document.querySelector(".name h3")
 var signoutBtn=document.querySelector(".signoutBtn");
+var transactionForm=document.querySelector(".transactionForm");
 // console.log(nameDiv)
 
 //fetching uid from url 
@@ -29,8 +30,27 @@ return data;
 }
 }
 
+var transactionFormSubmission=(e)=>{
+  e.preventDefault();
+  var title=document.querySelector(".title").value;
+  var cost=document.querySelector(".cost").value;
+  var transcationType=document.querySelector(".trascationType").value;
+  var date=document.querySelector(".date").value;
+if(title && cost && transcationType && date){
+  console.log(title)
+  console.log(cost)
+  console.log(transcationType)
+  console.log(date)
+
+
+}
+}
+
 // fetchUserInfo(uid);
 signoutBtn.addEventListener("click",usersignout);
+
+
+transactionForm.addEventListener("submit",(e)=>transactionFormSubmission(e));
 //auth listener 
 auth.onAuthStateChanged(async (user)=> {
     if (user) {
