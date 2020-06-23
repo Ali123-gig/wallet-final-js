@@ -16,7 +16,7 @@
     .navbar{
         background: lightpink;
         display: grid;
-        grid-template-columns:10fr 30fr 40fr 20fr;
+        grid-template-columns:10fr 50fr 30fr 10fr;
     }
     .logo h1{
         padding: 0px 20px;

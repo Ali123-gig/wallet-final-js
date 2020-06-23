@@ -8,7 +8,7 @@ var transactionForm=document.querySelector(".transactionForm");
 
 //fetching uid from url 
 
-// var uid=location.hash.substring(1,location.hash.length);
+var uid=location.hash.substring(1,location.hash.length);
 // console.log(uid)
 
 var usersignout= async ()=>{
@@ -37,12 +37,14 @@ var transactionFormSubmission=(e)=>{
   var transcationType=document.querySelector(".trascationType").value;
   var date=document.querySelector(".date").value;
 if(title && cost && transcationType && date){
-  console.log(title)
-  console.log(cost)
-  console.log(transcationType)
-  console.log(date)
-
-
+  var transcationObj={
+    title,
+    cost,
+    transcationType,
+    date,
+    transcationBy:uid 
+  }
+console.log(transcationObj)
 }
 }
 
