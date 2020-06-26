@@ -4,12 +4,45 @@ var firestore=firebase.firestore();
 var nameDiv=document.querySelector(".name h3")
 var signoutBtn=document.querySelector(".signoutBtn");
 var transactionForm=document.querySelector(".transactionForm");
+var transcationList=document.querySelector(".transcationList");
 // console.log(nameDiv)
 
 //fetching uid from url 
 
 var uid=location.hash.substring(1,location.hash.length);
-// console.log(uid)
+console.log(uid)
+
+var renderTranscation=(transcationArr)=>{
+  transcationArr.forEach((transcationObj,index)=>{
+    var{title,cost,transcationDate}=transcationObj;
+    transcationList.insertAdjacentHTML("beforeend",`<div class="transcationListItem">
+    <div class="renderIndex listItem">
+        <h3>${++index}</h3>
+    </div>
+    <div class="renderTitle listItem">
+        <h3>${title} </h3>
+    </div>
+    <div class="renderCost listItem">
+        <h3>${cost}</h3>
+    </div>
+    <div class="renderDate listItem">${transcationDate}</div>
+</div>`)
+    
+  });
+  
+}
+ var fetchtranscation= async (uid)=>{
+   var transcations=[];
+   var query=await firestore.collection("transcations").where("transcationBy","==",uid).get();
+   query.forEach((doc)=>{
+     transcations.push({...doc.data,transcationId:doc.id});
+   })
+  //  console.log(transcations)
+   return transcations;
+
+ }
+// fetchtranscation(uid)
+
 
 var usersignout= async ()=>{
 await auth.signOut();
@@ -19,10 +52,12 @@ var fetchUserInfo= async(uid)=>{
 try {
 var userInfo=await firestore.collection("users").doc(uid).get();
 var data=userInfo.data();
+var date=data.createdAt.toDate().toISOString().split("T")[0];
+console.log(date);
 console.log(data)
 return data;
 
-// var date=data.createdAt.toDate().toISOString().split("T")[0];
+
 
 
 } catch (error) {
@@ -30,22 +65,28 @@ return data;
 }
 }
 
-var transactionFormSubmission=(e)=>{
+var transactionFormSubmission= async(e)=>{
   e.preventDefault();
+ try {
   var title=document.querySelector(".title").value;
   var cost=document.querySelector(".cost").value;
   var transcationType=document.querySelector(".trascationType").value;
-  var date=document.querySelector(".date").value;
-if(title && cost && transcationType && date){
+  var transcationDate=document.querySelector(".date").value;
+if(title && cost && transcationType && transcationDate){
   var transcationObj={
     title,
     cost,
     transcationType,
-    date,
+    transcationDate: new Date(transcationDate),
     transcationBy:uid 
   }
-console.log(transcationObj)
+// console.log(transcationObj)
+await firestore.collection("transcations").add(transcationObj);
 }
+ } catch (error) {
+   console.log(error)
+   
+ }
 }
 
 // fetchUserInfo(uid);
@@ -60,6 +101,12 @@ auth.onAuthStateChanged(async (user)=> {
       var {uid}=user;
       var userInfo=await fetchUserInfo(uid)
     nameDiv.textContent=userInfo.fullname;
+    //render transcation 
+    //feteching user transcation 
+  var transcations=await fetchtranscation(uid)
+  renderTranscation(transcations);
+    // renderTranscation(transArr)
+    //render process 
     } else {
       // No user is signed in.
       location.assign("./index.html")

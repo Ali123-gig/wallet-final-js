@@ -39,3 +39,10 @@
     .transcationList{
         background: lime;
     }
+    .transcationListItem{
+        display: grid;
+        grid-template-columns: min-content 1fr min-content max-content;
+    }
+    .listItem{
+        padding: 20px;
+    }
