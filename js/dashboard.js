@@ -12,10 +12,11 @@ var transcationList=document.querySelector(".transcationList");
 var uid=location.hash.substring(1,location.hash.length);
 console.log(uid)
 
-var renderTranscation=(transcationArr)=>{
-  transcationArr.forEach((transcationObj,index)=>{
-    var{title,cost,transcationDate}=transcationObj;
-    transcationList.insertAdjacentHTML("beforeend",`<div class="transcationListItem">
+var renderTranscation=(transcations)=>{
+  transcations.forEach((transcation,index)=>{
+    var {title,cost,transcationDate,transcationId} = transcation;
+    transcationList.insertAdjacentHTML(
+      "beforeend" , `<div class="transcationListItem">
     <div class="renderIndex listItem">
         <h3>${++index}</h3>
     </div>
@@ -25,19 +26,21 @@ var renderTranscation=(transcationArr)=>{
     <div class="renderCost listItem">
         <h3>${cost}</h3>
     </div>
-    <div class="renderDate listItem">${transcationDate}</div>
-</div>`)
-    
-  });
-  
+    <div class="renderDate listItem">
+    ${transcationDate.toDate().toISOString().split("T")[0]}</div>  
+<div class="viewButton listItem">
+ <a href="./transcation.html#${transcationId}"><button type="button">view</button></a>
+  </div> </div>`)
+ });  
 }
  var fetchtranscation= async (uid)=>{
    var transcations=[];
    var query=await firestore.collection("transcations").where("transcationBy","==",uid).get();
    query.forEach((doc)=>{
-     transcations.push({...doc.data,transcationId:doc.id});
+    //  query.push({...doc.data(),transactionId: doc.id});
+   transcations.push({...doc.data(), transcationId: doc.id})
+
    })
-  //  console.log(transcations)
    return transcations;
 
  }
@@ -56,10 +59,6 @@ var date=data.createdAt.toDate().toISOString().split("T")[0];
 console.log(date);
 console.log(data)
 return data;
-
-
-
-
 } catch (error) {
  console.log(error)   
 }
@@ -103,8 +102,8 @@ auth.onAuthStateChanged(async (user)=> {
     nameDiv.textContent=userInfo.fullname;
     //render transcation 
     //feteching user transcation 
-  var transcations=await fetchtranscation(uid)
-  renderTranscation(transcations);
+  var transcation = await fetchtranscation(uid);
+  renderTranscation(transcation);
     // renderTranscation(transArr)
     //render process 
     } else {

@@ -11,7 +11,7 @@
     
     .container{
         display: grid;
-        grid-template-rows: 10vh 15vh minmax(75vh,min-content);
+        grid-template-rows: 10vh 10vh minmax(80vh,min-content);
     }
     .navbar{
         background: lightpink;
@@ -29,8 +29,8 @@
     }
     .signoutBtn{
         height: 60px;
-        width:100px;
-        border-radius: 30%;
+        /* width:100px; */
+        /* border-radius: 30%; */
 
     }
     .transcationForm{
@@ -38,11 +38,17 @@
     }
     .transcationList{
         background: lime;
+        
     }
     .transcationListItem{
         display: grid;
-        grid-template-columns: min-content 1fr min-content max-content;
+        grid-template-columns: min-content 1fr min-content max-content min-content;
+        grid-template-areas: "renderIndex renderTitle renderCost renderDate viewButton";
+        /* column-gap: 0px; */
+
+        /* column-gap: 20px; */
     }
     .listItem{
         padding: 20px;
+        /* flex-flow: row; */
     }
