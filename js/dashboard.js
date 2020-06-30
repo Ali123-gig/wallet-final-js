@@ -57,7 +57,7 @@ var userInfo=await firestore.collection("users").doc(uid).get();
 var data=userInfo.data();
 var date=data.createdAt.toDate().toISOString().split("T")[0];
 console.log(date);
-console.log(data)
+console.log(data) 
 return data;
 } catch (error) {
  console.log(error)   
